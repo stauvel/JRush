@@ -1,32 +1,56 @@
 package org.jrush.domain;
 
+import org.jrush.exercice.Data;
+import org.springframework.data.annotation.Id;
+
+import java.util.Date;
+
 /**
  * Created by Seb on 18/11/2015.
  */
-public class Exercice {
+public abstract class Exercice {
 
-    private String name;
+    @Id
+    private String uuid;
 
-    private String data;
+    private Data data;
 
-    public Exercice(String name, String data) {
-        this.name = name;
-        this.data = data;
+    private Date dateCreation;
+
+    private Candidate candidate;
+
+    public abstract void init();
+    public abstract Data solve();
+
+    public String getUuid() {
+        return uuid;
     }
 
-    public String getName() {
-        return name;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getData() {
+    public Data getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Data data) {
         this.data = data;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public Candidate getCandidate() {
+        return candidate;
+    }
+
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 }
