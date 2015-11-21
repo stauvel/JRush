@@ -1,5 +1,6 @@
 package org.jrush.exercice.cards;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.jrush.exercice.Data;
 
 import java.util.Collection;
@@ -10,7 +11,9 @@ import java.util.Collection;
 public class CardsData implements Data {
 
     private Collection<Card> cards;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Collection<Card.Category> categoryOrder;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Collection<Card.Value> valueOrder;
 
     public Collection<Card> getCards() {

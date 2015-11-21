@@ -8,19 +8,16 @@ import java.util.Date;
 /**
  * Created by Seb on 18/11/2015.
  */
-public abstract class Exercice {
+public class Exercice {
 
     @Id
     private String uuid;
-
-    private Data data;
 
     private Date dateCreation;
 
     private Candidate candidate;
 
-    public abstract void init();
-    public abstract Data solve();
+    private Data data;
 
     public String getUuid() {
         return uuid;
@@ -28,14 +25,6 @@ public abstract class Exercice {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    public Data getData() {
-        return data;
-    }
-
-    public void setData(Data data) {
-        this.data = data;
     }
 
     public Date getDateCreation() {
@@ -52,5 +41,13 @@ public abstract class Exercice {
 
     public void setCandidate(Candidate candidate) {
         this.candidate = candidate;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
     }
 }

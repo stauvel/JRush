@@ -1,10 +1,10 @@
 package org.jrush.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jrush.domain.Candidate;
 import org.jrush.domain.Exercice;
 import org.jrush.exercice.Data;
-import org.jrush.exercice.cards.CardExercice;
-import org.jrush.exercice.cards.CardsData;
+import org.jrush.exercice.cards.CardCommand;
 import org.jrush.repository.CandidateRepository;
 import org.jrush.repository.ExerciceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -31,22 +32,26 @@ public class ExerciceController {
         if(candidate == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Exercice cardExercice = new CardExercice();
-        cardExercice.setDateCreation(new Date());
-        cardExercice.setCandidate(candidate);
-        cardExercice.init();
-        exerciceRepository.save(cardExercice);
-        return new ResponseEntity<>(cardExercice, HttpStatus.OK);
+        Exercice exercice = new Exercice();
+        exercice.setDateCreation(new Date());
+        exercice.setCandidate(candidate);
+        CardCommand exerciceCommand = new CardCommand();
+        exercice.setData(exerciceCommand.init(exercice));
+        exerciceRepository.save(exercice);
+        return new ResponseEntity<>(exercice, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST,path = "/test/{uuid}")
-    public ResponseEntity<Data> tryCardsExercice(@RequestBody CardsData data, @PathVariable String uuid) {
+    public ResponseEntity<Data> tryCardsExercice(@RequestBody String data, @PathVariable String uuid) throws IOException {
         Exercice exercice = exerciceRepository.findOne(uuid);
         if(data == null || exercice == null) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        Data solution = exercice.solve();
-        if(solution.match(data)) {
+        CardCommand exerciceCommand = new CardCommand();
+        Data solution = exerciceCommand.solve(exercice);
+
+        Data value = new ObjectMapper().readValue(data, exerciceCommand.getAnswerType());
+        if(solution.match(value)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(solution, HttpStatus.NOT_ACCEPTABLE);
@@ -59,6 +64,7 @@ public class ExerciceController {
         if(exercice == null) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(exercice.solve(), HttpStatus.OK);
+        CardCommand exerciceCommand = new CardCommand();
+        return new ResponseEntity<>(exerciceCommand.solve(exercice), HttpStatus.OK);
     }
 }
