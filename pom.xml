@@ -8,8 +8,8 @@
     <artifactId>root</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>core</module>
-        <module>web</module>
+        <module>jrush-core</module>
+        <module>jrush-server</module>
     </modules>
 
     <parent>
