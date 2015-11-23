@@ -19,6 +19,8 @@ public class Exercice {
 
     private Data data;
 
+    private String name;
+
     public String getUuid() {
         return uuid;
     }
@@ -49,5 +51,13 @@ public class Exercice {
 
     public void setData(Data data) {
         this.data = data;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

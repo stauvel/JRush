@@ -1,4 +1,4 @@
-package org.jrush.exercice.cards;
+package org.jrush.example;
 
 import org.jrush.domain.Exercice;
 import org.jrush.exercice.Data;
@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class CardCommand implements ExerciceCommand {
 
+    private static final String NAME = "cards";
+
     private static List<Card> deck;
     static {
         deck = new ArrayList<>(52);
@@ -22,6 +24,11 @@ public class CardCommand implements ExerciceCommand {
                 deck.add(new Card(category, value));
             }
         }
+    }
+
+    @Override
+    public String getName() {
+        return CardCommand.NAME;
     }
 
     @Override

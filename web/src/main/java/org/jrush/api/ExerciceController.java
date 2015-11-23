@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jrush.domain.Candidate;
 import org.jrush.domain.Exercice;
 import org.jrush.exercice.Data;
-import org.jrush.exercice.cards.CardCommand;
 import org.jrush.repository.CandidateRepository;
 import org.jrush.repository.ExerciceRepository;
+import org.jrush.spi.ExerciceCommand;
+import org.jrush.spi.ExerciceServiceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,8 @@ public class ExerciceController {
     private ExerciceRepository exerciceRepository;
     @Autowired
     private CandidateRepository candidateRepository;
+    //@Autowired
+    private ExerciceServiceLoader exerciceServiceLoader;
 
     @RequestMapping("/test/cards/{uuid}")
     public ResponseEntity<Exercice> initCardsExercice(@PathVariable String uuid) {
@@ -35,7 +38,9 @@ public class ExerciceController {
         Exercice exercice = new Exercice();
         exercice.setDateCreation(new Date());
         exercice.setCandidate(candidate);
-        CardCommand exerciceCommand = new CardCommand();
+        exercice.setName("cards");
+        exerciceServiceLoader = new ExerciceServiceLoader();
+        ExerciceCommand exerciceCommand = exerciceServiceLoader.getExercice(exercice.getName());
         exercice.setData(exerciceCommand.init(exercice));
         exerciceRepository.save(exercice);
         return new ResponseEntity<>(exercice, HttpStatus.OK);
@@ -47,7 +52,7 @@ public class ExerciceController {
         if(data == null || exercice == null) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        CardCommand exerciceCommand = new CardCommand();
+        ExerciceCommand exerciceCommand = exerciceServiceLoader.getExercice(exercice.getName());
         Data solution = exerciceCommand.solve(exercice);
 
         Data value = new ObjectMapper().readValue(data, exerciceCommand.getAnswerType());
@@ -64,7 +69,7 @@ public class ExerciceController {
         if(exercice == null) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        CardCommand exerciceCommand = new CardCommand();
+        ExerciceCommand exerciceCommand = exerciceServiceLoader.getExercice(exercice.getName());
         return new ResponseEntity<>(exerciceCommand.solve(exercice), HttpStatus.OK);
     }
 }

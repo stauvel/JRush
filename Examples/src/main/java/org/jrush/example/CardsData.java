@@ -1,4 +1,4 @@
-package org.jrush.exercice.cards;
+package org.jrush.example;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.jrush.exercice.Data;

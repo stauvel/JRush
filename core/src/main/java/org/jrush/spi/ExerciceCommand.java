@@ -9,6 +9,12 @@ import org.jrush.exercice.Data;
 public interface ExerciceCommand {
 
     /**
+     * The unique name of the exercice's command
+     * @return
+     */
+    String getName();
+
+    /**
      * Create the exercice data
      * @param exercice
      */

@@ -1,4 +1,4 @@
-package org.jrush.exercice.cards;
+package org.jrush.example;
 
 /**
  * Created by Seb on 18/11/2015.
