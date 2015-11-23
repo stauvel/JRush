@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 public class Candidate {
 
     @Id
-    private String id;
+    private String candidateId;
 
     private String firstName;
     private String lastName;
@@ -21,8 +21,8 @@ public class Candidate {
         this.lastName = lastName;
     }
 
-    public String getId() {
-        return id;
+    public String getCandidateId() {
+        return candidateId;
     }
 
     public String getFirstName() {

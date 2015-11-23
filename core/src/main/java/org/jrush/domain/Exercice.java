@@ -11,7 +11,7 @@ import java.util.Date;
 public class Exercice {
 
     @Id
-    private String uuid;
+    private String exerciceId;
 
     private Date dateCreation;
 
@@ -21,12 +21,12 @@ public class Exercice {
 
     private String name;
 
-    public String getUuid() {
-        return uuid;
+    public String getExerciceId() {
+        return exerciceId;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setExerciceId(String exerciceId) {
+        this.exerciceId = exerciceId;
     }
 
     public Date getDateCreation() {

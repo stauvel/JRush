@@ -1,9 +1,11 @@
 package org.jrush.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jrush.domain.Activity;
 import org.jrush.domain.Candidate;
 import org.jrush.domain.Exercice;
 import org.jrush.exercice.Data;
+import org.jrush.repository.ActvityRepository;
 import org.jrush.repository.CandidateRepository;
 import org.jrush.repository.ExerciceRepository;
 import org.jrush.spi.ExerciceCommand;
@@ -26,7 +28,9 @@ public class ExerciceController {
     private ExerciceRepository exerciceRepository;
     @Autowired
     private CandidateRepository candidateRepository;
-    //@Autowired
+    @Autowired
+    private ActvityRepository actvityRepository;
+    @Autowired
     private ExerciceServiceLoader exerciceServiceLoader;
 
     @RequestMapping("/test/cards/{uuid}")
@@ -39,15 +43,19 @@ public class ExerciceController {
         exercice.setDateCreation(new Date());
         exercice.setCandidate(candidate);
         exercice.setName("cards");
-        exerciceServiceLoader = new ExerciceServiceLoader();
         ExerciceCommand exerciceCommand = exerciceServiceLoader.getExercice(exercice.getName());
         exercice.setData(exerciceCommand.init(exercice));
         exerciceRepository.save(exercice);
+        saveActivity(exercice, Activity.Type.READ_PREDICATE);
         return new ResponseEntity<>(exercice, HttpStatus.OK);
     }
 
+    private void saveActivity(Exercice exercice, Activity.Type type) {
+        actvityRepository.save(new Activity(exercice, type));
+    }
+
     @RequestMapping(method = RequestMethod.POST,path = "/test/{uuid}")
-    public ResponseEntity<Data> tryCardsExercice(@RequestBody String data, @PathVariable String uuid) throws IOException {
+    public ResponseEntity<Data> tryExercice(@RequestBody String data, @PathVariable String uuid) throws IOException {
         Exercice exercice = exerciceRepository.findOne(uuid);
         if(data == null || exercice == null) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -57,8 +65,10 @@ public class ExerciceController {
 
         Data value = new ObjectMapper().readValue(data, exerciceCommand.getAnswerType());
         if(solution.match(value)) {
+            saveActivity(exercice, Activity.Type.SUBMIT_ANSWER_OK);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
+            saveActivity(exercice, Activity.Type.SUBMIT_ANSWER_BAD);
             return new ResponseEntity<>(solution, HttpStatus.NOT_ACCEPTABLE);
         }
     }
@@ -66,6 +76,7 @@ public class ExerciceController {
     @RequestMapping("/test/solution/{uuid}")
     public ResponseEntity<Data> solveCardsExercice(@PathVariable String uuid){
         Exercice exercice = exerciceRepository.findOne(uuid);
+        saveActivity(exercice, Activity.Type.READ_ANSWER);
         if(exercice == null) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
