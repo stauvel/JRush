@@ -6,7 +6,7 @@
 
     <groupId>org.jrush</groupId>
     <artifactId>root</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <modules>
         <module>jrush-core</module>
         <module>jrush-server</module>
