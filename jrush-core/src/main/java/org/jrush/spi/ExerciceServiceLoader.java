@@ -1,5 +1,7 @@
 package org.jrush.spi;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ServiceLoader;
@@ -8,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by Seb on 22/11/2015.
  */
+@Component
 public class ExerciceServiceLoader {
 
     public static ClassLoader extensionClassLoader;
