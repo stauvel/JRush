@@ -5,7 +5,7 @@ import org.jrush.domain.Activity;
 import org.jrush.domain.Candidate;
 import org.jrush.domain.Exercice;
 import org.jrush.exercice.Data;
-import org.jrush.repository.ActvityRepository;
+import org.jrush.repository.ActivityRepository;
 import org.jrush.repository.CandidateRepository;
 import org.jrush.repository.ExerciceRepository;
 import org.jrush.spi.ExerciceCommand;
@@ -29,7 +29,7 @@ public class ExerciceController {
     @Autowired
     private CandidateRepository candidateRepository;
     @Autowired
-    private ActvityRepository actvityRepository;
+    private ActivityRepository activityRepository;
     @Autowired
     private ExerciceServiceLoader exerciceServiceLoader;
 
@@ -51,7 +51,7 @@ public class ExerciceController {
     }
 
     private void saveActivity(Exercice exercice, Activity.Type type) {
-        actvityRepository.save(new Activity(exercice, type));
+        activityRepository.save(new Activity(exercice, type));
     }
 
     @RequestMapping(method = RequestMethod.POST,path = "/test/{uuid}")

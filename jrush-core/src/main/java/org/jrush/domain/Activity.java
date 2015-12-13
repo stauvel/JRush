@@ -1,5 +1,6 @@
 package org.jrush.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ public class Activity {
     @Id
     private String activityId;
     private Date date = new Date();
+    @JsonIgnore
     private Exercice exercice;
     private Type type;
 

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class ExerciceServiceLoader {
 
-    public static ClassLoader extensionClassLoader;
+    //public static ClassLoader extensionClassLoader;
 
     private ServiceLoader<ExerciceCommand> commandLoader;
     private Map<String, ExerciceCommand> commands;
@@ -21,7 +21,7 @@ public class ExerciceServiceLoader {
     public ExerciceServiceLoader () {
         // Discover and register the available exercices
         commands = new ConcurrentHashMap<>();
-        commandLoader = ServiceLoader.load(ExerciceCommand.class, extensionClassLoader);
+        commandLoader = ServiceLoader.load(ExerciceCommand.class/*, extensionClassLoader*/);
         Iterator<ExerciceCommand> commandsIterator = commandLoader.iterator();
         while (commandsIterator.hasNext())
         {

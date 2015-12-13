@@ -11,8 +11,9 @@ import java.util.List;
  * Created by Seb on 23/11/2015.
  */
 @RepositoryRestResource
-public interface ActvityRepository extends MongoRepository<Activity, String> {
+public interface ActivityRepository extends MongoRepository<Activity, String> {
 
-    List<Activity> findByExerciceCandidateFirstName(@Param("name") String name);
+    List<Activity> findByExerciceCandidateLastName(@Param("name") String name);
+    List<Activity> findByExerciceCandidateFirstNameAndExerciceCandidateLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 }
 
